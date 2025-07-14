@@ -1,0 +1,42 @@
+<ion-content class="login-bg" fullscreen>
+  <div class="container">
+    <h1 class="app-title">Nombre de La App</h1>
+
+    <img src="assets/img/paquete.png" alt="paquete" class="logo" />
+
+    <h2 class="subtitle">Inicia Sesión</h2>
+    <p class="description">Ingresa tu email para ingresar en esta aplicación</p>
+
+    <form (ngSubmit)="login()">
+      <ion-item lines="none" class="custom-input">
+        <ion-input
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          placeholder="email@dominio.com"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          placeholder="contraseña"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" class="continue-button">
+        Continue
+      </ion-button>
+    </form>
+
+    <p class="terms-text">
+      Al hacer clic en continuar, aceptas nuestros
+      <span class="highlight">Términos de Servicio</span> y
+      <span class="highlight">Política de Privacidad</span>.
+    </p>
+  </div>
+</ion-content>
