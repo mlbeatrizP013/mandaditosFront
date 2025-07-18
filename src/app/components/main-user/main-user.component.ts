@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { IonHeader } from "@ionic/angular/standalone";
 
 @Component({
+  standalone: false,
   selector: 'app-main-user',
   templateUrl: './main-user.component.html',
   styleUrls: ['./main-user.component.scss'],
 })
+
 export class MainUserComponent{
+
   estado: 'entregados' | 'proceso' = 'proceso';
     pedidosEnProceso = [
     { descripcion: 'Pedido 1', hora: '10:00 AM' },
