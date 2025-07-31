@@ -1,0 +1,66 @@
+<ion-content class="login-bg" fullscreen>
+  <div class="container">
+    <h1 class="app-title">Nombre de La App</h1>
+
+    <img src="assets/img/paquete.png" alt="paquete" class="logo" />
+
+    <h2 class="subtitle">{{ isLogin ? 'Inicia Sesión' : 'Regístrate' }}</h2>
+    <p class="description" *ngIf="isLogin">
+      Ingresa tu email para ingresar en esta aplicación
+    </p>
+    <p class="description" *ngIf="!isLogin">
+      Completa el formulario para crear una cuenta
+    </p>
+
+    <form (ngSubmit)="isLogin ? login() : register()">
+      <ion-item lines="none" class="custom-input">
+        <ion-input
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          placeholder="email@dominio.com"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          placeholder="contraseña"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <!-- Campo extra para registro -->
+      <ion-item
+        lines="none"
+        class="custom-input"
+        *ngIf="!isLogin"
+      >
+        <ion-input
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirma tu contraseña"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" class="continue-button">
+        {{ isLogin ? 'Continuar' : 'Registrar' }}
+      </ion-button>
+    </form>
+
+    <p class="terms-text" *ngIf="isLogin">
+      Al hacer clic en continuar, aceptas nuestros
+      <span class="highlight">Términos de Servicio</span> y
+      <span class="highlight">Política de Privacidad</span>.
+    </p>
+
+    <ion-button fill="clear" size="small" (click)="toggleForm()">
+      {{ isLogin ? 'No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión' }}
+    </ion-button>
+  </div>
+</ion-content>

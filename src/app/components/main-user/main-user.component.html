@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="usuario-bg">
+  <div class="usuario-container">
+
+    <ion-avatar class="avatar-center">
+      <img src="assets/avatar.png" alt="avatar">
+    </ion-avatar>
+
+    <h2 class="section-title">Mandado Actual</h2>
+
+    <div class="tab-buttons">
+      <button [class.active]="estado === 'entregados'" (click)="estado = 'entregados'">Entregados</button>
+      <button [class.active]="estado === 'proceso'" (click)="estado = 'proceso'">En proceso</button>
+    </div>
+
+    <ng-container *ngIf="estado === 'proceso'">
+      <ion-card *ngFor="let pedido of pedidosEnProceso">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="paper-plane-outline"></ion-icon>
+            Estado del pedido
+            <ion-icon name="close-outline" slot="end"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Descripción del objeto <br />
+          Hora
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <ng-container *ngIf="estado === 'entregados'">
+      <ion-card *ngFor="let pedido of pedidosEntregados">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="paper-plane-outline"></ion-icon>
+            Estado del pedido
+            <ion-icon name="close-outline" slot="end"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Descripción del objeto <br />
+          Hora
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <ion-button expand="block" class="solicitar-btn">Solicitar Mandado</ion-button>
+
+  </div>
+</ion-content>
+
