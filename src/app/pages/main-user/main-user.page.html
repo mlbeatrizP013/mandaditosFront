@@ -7,18 +7,41 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding custom-bg">
+<ion-menu contentId="main-content" side="start">
+  <ion-header>
+    <ion-toolbar color="light">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button routerLink="/perfil">
+        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-item>
+      <!-- Puedes agregar más opciones aquí -->
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
-  <!-- Imagen de usuario -->
-  <div class="profile-container">
-    <ion-avatar class="profile-avatar">
-      <img src="assets/avatar.png" alt="avatar" />
-    </ion-avatar>
-  </div>
+<ion-content id="main-content" [fullscreen]="true" class="ion-padding custom-bg">
 
-  <!-- Mandado Actual -->
-  <div class="mandado-title">Mandado Actual</div>
-   <ion-card class="pedido-card">
+
+  <!-- VISTA 1: Mandados actuales -->
+  <div *ngIf="!mostrarFormulario">
+
+    <!-- Imagen de usuario -->
+    <div class="profile-container">
+      <ion-avatar class="profile-avatar">
+        <img src="assets/usuario.png" alt="avatar" />
+      </ion-avatar>
+    </div>
+
+    <!-- Mandado Actual -->
+    <div class="mandado-title">Mandado Actual</div>
+
+      <!-- Tarjeta principal -->
+  <ion-card class="pedido-card">
     <ion-item lines="none">
       <ion-icon name="navigate-outline" slot="start"></ion-icon>
       <ion-label>
@@ -32,71 +55,96 @@
     </ion-item>
   </ion-card>
 
-  <!-- Tabs entregados / en proceso -->
-  <div class="tabs-container">
-    <span
-      class="tab"
-      [ngClass]="{ active: currentTab === 'entregados' }"
-      (click)="changeTab('entregados')"
-    >
-      Entregados
-    </span>
-    <span
-      class="tab"
-      [ngClass]="{ active: currentTab === 'enProceso' }"
-      (click)="changeTab('enProceso')"
-    >
-      En proceso
-    </span>
+    <!-- Tabs entregados / en proceso -->
+    <div class="tabs-container">
+      <span
+        class="tab"
+        [ngClass]="{ active: currentTab === 'entregados' }"
+        (click)="changeTab('entregados')"
+      >
+        Entregados
+      </span>
+      <span
+        class="tab"
+        [ngClass]="{ active: currentTab === 'enProceso' }"
+        (click)="changeTab('enProceso')"
+      >
+        En proceso
+      </span>
+    </div>
+
+    <!-- Contenido según pestaña -->
+    <div *ngIf="currentTab === 'enProceso'">
+      <ion-card class="pedido-card">
+        <ion-item lines="none">
+          <ion-icon name="navigate-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h2>Estado del pedido</h2>
+            <p>Descripción del objeto</p>
+            <p>Hora</p>
+          </ion-label>
+          <ion-button fill="clear" color="dark" size="small">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-card>
+    </div>
+
+    <div *ngIf="currentTab === 'entregados'">
+      <ion-card class="pedido-card">
+        <ion-item lines="none">
+          <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h2>Pedido entregado</h2>
+            <p>Descripción del objeto</p>
+            <p>Hora</p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
+
+    <!-- Botón solicitar mandado -->
+    <div class="btn-container">
+      <ion-button expand="block" shape="round" color="light" (click)="mostrarFormulario = true">
+        Solicitar Mandado
+      </ion-button>
+    </div>
   </div>
 
-  <!-- Contenido según pestaña -->
-  <div *ngIf="currentTab === 'enProceso'">
-    <ion-card class="pedido-card">
-      <ion-item lines="none">
-        <ion-icon name="navigate-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h2>Estado del pedido</h2>
-          <p>Descripción del objeto</p>
-          <p>Hora</p>
-        </ion-label>
-        <ion-button fill="clear" color="dark" size="small">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-card>
+  <!-- VISTA 2: Formulario para solicitar -->
+  <div *ngIf="mostrarFormulario">
+    <h2 class="form-title">Solicita un Mandado</h2>
 
-    <ion-card class="pedido-card">
-      <ion-item lines="none">
-        <ion-icon name="navigate-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h2>Estado del pedido</h2>
-          <p>Descripción del objeto</p>
-          <p>Hora</p>
-        </ion-label>
-        <ion-button fill="clear" color="dark" size="small">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-card>
-  </div>
+    <div class="image-container">
+      <img src="assets/mandado.png" alt="Paquete" />
+    </div>
 
-  <div *ngIf="currentTab === 'entregados'">
-    <ion-card class="pedido-card">
-      <ion-item lines="none">
-        <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h2>Pedido entregado</h2>
-          <p>Descripción del objeto</p>
-          <p>Hora</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-  </div>
+    <!-- Precio -->
+    <div class="slider-container">
+      <div class="labels">
+        <span>Precio</span>
+        <span>$0-100</span>
+      </div>
+      <ion-range min="0" max="100" [(ngModel)]="precio" pin="true"></ion-range>
+      <p>Ingresa un monto</p>
+    </div>
 
-  <!-- Botón solicitar mandado -->
-  <div class="btn-container">
-    <ion-button expand="block" shape="round" color="light">Solicitar Mandado</ion-button>
+    <!-- Inputs -->
+<ion-input type="text" placeholder="Nombre del producto" fill="solid" class="custom-input"></ion-input>
+<ion-input type="text" placeholder="Descripción del producto" fill="solid" class="custom-input"></ion-input>
+<ion-input type="text" placeholder="Dirección de recolección" fill="solid" class="custom-input"></ion-input>
+<ion-input type="text" placeholder="Dirección de entrega" fill="solid" class="custom-input"></ion-input>
+
+
+    <!-- Botón enviar o regresar -->
+    <div class="btn-container">
+      <ion-button expand="block" shape="round" color="light" (click)="enviarSolicitud()">
+        Solicitar
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="mostrarFormulario = false">
+        Cancelar
+      </ion-button>
+    </div>
   </div>
 
 </ion-content>

@@ -14,6 +14,8 @@ export class MainUserPage {
     this.currentTab = tab;
   }
 
+  mostrarFormulario = false;
+  precio = 0;
 
   estado: 'entregados' | 'proceso' = 'proceso';
 
@@ -31,5 +33,11 @@ export class MainUserPage {
   cerrarSesion() {
     localStorage.removeItem('usuarioActivo');
     this.navCtrl.navigateRoot('/login');
+  }
+   enviarSolicitud() {
+
+    console.log('Solicitud enviada con precio:', this.precio);
+  
+    this.mostrarFormulario = false;
   }
 }

@@ -1,13 +1,80 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light" class="header-toolbar">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Repartidor</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-menu contentId="main-content" side="start">
+  <ion-header>
+    <ion-toolbar color="light">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button routerLink="/perfil">
+        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-item>
+      <!-- Puedes agregar más opciones aquí -->
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
-<ion-content [fullscreen]="true" class="repartidor-bg">
-  <div class="repartidor-container">
-    <!-- Aquí irán funciones del repartidor más adelante -->
+<ion-content id="main-content" [fullscreen]="true" class="ion-padding custom-bg">
 
-    <ion-button expand="block" color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+
+  <div class="container">
+
+    <!-- Avatar -->
+    <ion-avatar class="avatar">
+      <img src="assets/usuario.png" alt="Avatar" />
+    </ion-avatar>
+
+    <!-- Mandado Actual -->
+    <h2 class="titulo">Mandado Actual</h2>
+    <ion-card class="pedido-card">
+      <ion-item lines="none">
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h3>Estado del pedido</h3>
+          <p>Descripción del objeto</p>
+          <p>Hora</p>
+        </ion-label>
+        <ion-button fill="clear" color="dark" size="small">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+
+    <!-- Buscador -->
+    <ion-searchbar
+      [(ngModel)]="filtro"
+      placeholder="Buscar pedidos"
+      class="custom-search"
+    ></ion-searchbar>
+
+    <!-- Mandados disponibles -->
+    <h2 class="titulo">Mandados disponibles</h2>
+    <ion-card
+      class="pedido-card"
+      *ngFor="let pedido of pedidosFiltrados()"
+      (click)="mostrarAlerta(pedido)"
+    >
+      <ion-item lines="none">
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h3>{{ pedido.estado }}</h3>
+          <p>{{ pedido.descripcion }}</p>
+          <p>{{ pedido.hora }}</p>
+          <p>Precio: {{ pedido.precio }}</p>
+        </ion-label>
+        <ion-button fill="clear" color="dark" size="small">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
   </div>
 </ion-content>

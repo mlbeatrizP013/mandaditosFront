@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="perfil-bg" [fullscreen]="true">
+
+  <div class="container">
+
+    <ion-avatar class="avatar">
+      <img src="assets/usuario.png" alt="Avatar" />
+    </ion-avatar>
+
+    <ion-input
+      type="text"
+      placeholder="Nombre de Usuario"
+      class="input-box"
+      fill="solid"
+    ></ion-input>
+
+    <ion-input
+      type="email"
+      placeholder="Correo"
+      class="input-box"
+      fill="solid"
+    ></ion-input>
+
+    <ion-input
+      type="password"
+      placeholder="Contraseña"
+      class="input-box"
+      fill="solid"
+    ></ion-input>
+
+    <ion-input
+      type="tel"
+      placeholder="Número telefónico"
+      class="input-box"
+      fill="solid"
+    ></ion-input>
+
+    <ion-button expand="block" shape="round" class="btn-primary">
+      Guardar
+    </ion-button>
+
+    <ion-button expand="block" shape="round" fill="outline" class="btn-secundario" (click)="cerrarSesion()">
+      Cerrar sesión
+    </ion-button>
+
+  </div>
+
+</ion-content>
