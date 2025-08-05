@@ -8,6 +8,12 @@ import { NavController } from '@ionic/angular'; // 👈 Necesario para redirecci
   standalone: false
 })
 export class MainUserPage {
+    currentTab: 'entregados' | 'enProceso' = 'enProceso';
+
+  changeTab(tab: 'entregados' | 'enProceso') {
+    this.currentTab = tab;
+  }
+
 
   estado: 'entregados' | 'proceso' = 'proceso';
 

@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="light" class="header-toolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -7,56 +7,96 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="usuario-bg">
-  <div class="usuario-container">
+<ion-content [fullscreen]="true" class="ion-padding custom-bg">
 
-    <ion-avatar class="avatar-center">
-      <img src="assets/avatar.png" alt="avatar">
+  <!-- Imagen de usuario -->
+  <div class="profile-container">
+    <ion-avatar class="profile-avatar">
+      <img src="assets/avatar.png" alt="avatar" />
     </ion-avatar>
-
-    <h2 class="section-title">Mandado Actual</h2>
-
-    <div class="tab-buttons">
-      <button [class.active]="estado === 'entregados'" (click)="estado = 'entregados'">Entregados</button>
-      <button [class.active]="estado === 'proceso'" (click)="estado = 'proceso'">En proceso</button>
-    </div>
-
-    <ng-container *ngIf="estado === 'proceso'">
-      <ion-card *ngFor="let pedido of pedidosEnProceso">
-        <ion-card-header>
-          <ion-card-title>
-            <ion-icon name="paper-plane-outline"></ion-icon>
-            Estado del pedido
-            <ion-icon name="close-outline" slot="end"></ion-icon>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          Descripción del objeto <br />
-          Hora
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
-
-    <ng-container *ngIf="estado === 'entregados'">
-      <ion-card *ngFor="let pedido of pedidosEntregados">
-        <ion-card-header>
-          <ion-card-title>
-            <ion-icon name="paper-plane-outline"></ion-icon>
-            Estado del pedido
-            <ion-icon name="close-outline" slot="end"></ion-icon>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          Descripción del objeto <br />
-          Hora
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
-
-    <ion-button expand="block" class="solicitar-btn">Solicitar Mandado</ion-button>
-
-    <!-- Botón de cerrar sesión -->
-    <ion-button expand="block" color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
-
   </div>
+
+  <!-- Mandado Actual -->
+  <div class="mandado-title">Mandado Actual</div>
+   <ion-card class="pedido-card">
+    <ion-item lines="none">
+      <ion-icon name="navigate-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>Estado del pedido</h2>
+        <p>Descripción del objeto</p>
+        <p>Hora</p>
+      </ion-label>
+      <ion-button fill="clear" color="dark" size="small">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
+
+  <!-- Tabs entregados / en proceso -->
+  <div class="tabs-container">
+    <span
+      class="tab"
+      [ngClass]="{ active: currentTab === 'entregados' }"
+      (click)="changeTab('entregados')"
+    >
+      Entregados
+    </span>
+    <span
+      class="tab"
+      [ngClass]="{ active: currentTab === 'enProceso' }"
+      (click)="changeTab('enProceso')"
+    >
+      En proceso
+    </span>
+  </div>
+
+  <!-- Contenido según pestaña -->
+  <div *ngIf="currentTab === 'enProceso'">
+    <ion-card class="pedido-card">
+      <ion-item lines="none">
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Estado del pedido</h2>
+          <p>Descripción del objeto</p>
+          <p>Hora</p>
+        </ion-label>
+        <ion-button fill="clear" color="dark" size="small">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+
+    <ion-card class="pedido-card">
+      <ion-item lines="none">
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Estado del pedido</h2>
+          <p>Descripción del objeto</p>
+          <p>Hora</p>
+        </ion-label>
+        <ion-button fill="clear" color="dark" size="small">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <div *ngIf="currentTab === 'entregados'">
+    <ion-card class="pedido-card">
+      <ion-item lines="none">
+        <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Pedido entregado</h2>
+          <p>Descripción del objeto</p>
+          <p>Hora</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <!-- Botón solicitar mandado -->
+  <div class="btn-container">
+    <ion-button expand="block" shape="round" color="light">Solicitar Mandado</ion-button>
+  </div>
+
 </ion-content>
