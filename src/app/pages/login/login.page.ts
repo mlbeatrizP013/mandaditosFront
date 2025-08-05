@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  standalone: false,
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
+  standalone:false
 })
-export class LoginComponent  {
-   isLogin = true;
+export class LoginPage {
+  isLogin = true;
 
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-constructor(
+  selectedRole: string = '';
+
+  constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController
   ) {}
@@ -27,23 +29,38 @@ constructor(
     this.email = '';
     this.password = '';
     this.confirmPassword = '';
+    this.selectedRole = '';
   }
 
   async login() {
-    const storedUsers = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const user = storedUsers.find((u: any) => u.email === this.email && u.password === this.password);
+  const storedUsers = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  const user = storedUsers.find((u: any) => u.email === this.email && u.password === this.password);
 
-    if (user) {
-      await this.showAlert('¡Bienvenido!', `Hola ${user.email}`);
-      this.navCtrl.navigateRoot('/tabs/tab1');
-    } else {
-      await this.showAlert('Error', 'Correo o contraseña incorrectos');
+  if (user) {
+    localStorage.setItem('usuarioActivo', JSON.stringify(user));
+
+    await this.showAlert('¡Bienvenido!', `Hola ${user.email}`);
+
+    // Redirigir según rol
+    if (user.role === 'cliente') {
+      this.navCtrl.navigateRoot('/main-user');
+    } else if (user.role === 'repartidor') {
+      this.navCtrl.navigateRoot('/repartidor');
     }
+  } else {
+    await this.showAlert('Error', 'Correo o contraseña incorrectos');
   }
+}
+
 
   async register() {
     if (this.password !== this.confirmPassword) {
       await this.showAlert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
+
+    if (!this.selectedRole) {
+      await this.showAlert('Error', 'Debes seleccionar un rol');
       return;
     }
 
@@ -55,7 +72,12 @@ constructor(
       return;
     }
 
-    const newUser = { email: this.email, password: this.password };
+    const newUser = {
+      email: this.email,
+      password: this.password,
+      role: this.selectedRole // 👈 se guarda el rol
+    };
+
     storedUsers.push(newUser);
     localStorage.setItem('usuarios', JSON.stringify(storedUsers));
 
