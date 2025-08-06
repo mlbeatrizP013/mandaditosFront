@@ -23,7 +23,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/repartidor/repartidor.module').then(m => m.RepartidorPageModule),
     canActivate: [AuthGuard],
     data: { role: 'repartidor' } // 👈 solo repartidores
-  },  {
+  },
+  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   }
