@@ -4,74 +4,28 @@
 
     <img src="assets/mandado.png" alt="paquete" class="logo" />
 
-    <h2 class="subtitle">{{ isLogin ? 'Inicia Sesión' : 'Regístrate' }}</h2>
+    <h2 class="subtitle">Inicia Sesión</h2>
 
-    <p class="description" *ngIf="isLogin">
+    <p class="description">
       Ingresa tu email para ingresar en esta aplicación
     </p>
-    <p class="description" *ngIf="!isLogin">
-      Completa el formulario para crear una cuenta
-    </p>
 
-    <form (ngSubmit)="isLogin ? login() : register()">
+    <form (ngSubmit)="onSubmit()">
       <ion-item lines="none" class="custom-input">
-        <ion-input
-          [(ngModel)]="email"
-          name="email"
-          type="email"
-          placeholder="email@dominio.com"
-          required
-        ></ion-input>
+        <ion-input [(ngModel)]="email" name="email" type="email" placeholder="email@dominio.com" required></ion-input>
       </ion-item>
 
       <ion-item lines="none" class="custom-input">
-        <ion-input
-          [(ngModel)]="password"
-          name="password"
-          type="password"
-          placeholder="contraseña"
-          required
-        ></ion-input>
-      </ion-item>
-
-      <!-- Campo de confirmar contraseña solo en registro -->
-      <ion-item lines="none" class="custom-input" *ngIf="!isLogin">
-        <ion-input
-          [(ngModel)]="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirma tu contraseña"
-          required
-        ></ion-input>
-      </ion-item>
-
-      <!-- Selector de rol solo en registro -->
-      <ion-item *ngIf="!isLogin" lines="none" class="custom-input">
-        <ion-select
-          placeholder="Selecciona tu rol"
-          [(ngModel)]="selectedRole"
-          name="role"
-          required
-        >
-          <ion-select-option value="cliente">Cliente</ion-select-option>
-          <ion-select-option value="repartidor">Repartidor</ion-select-option>
-        </ion-select>
+        <ion-input [(ngModel)]="password" name="password" type="password" placeholder="contraseña" required></ion-input>
       </ion-item>
 
       <ion-button expand="block" type="submit" class="continue-button">
-        {{ isLogin ? 'Continuar' : 'Registrar' }}
+        Continuar
       </ion-button>
     </form>
 
-    <!-- Términos y condiciones solo en registro -->
-    <p class="terms-text" *ngIf="!isLogin">
-      Al hacer clic en registrar, aceptas nuestros
-      <span class="highlight">Términos de Servicio</span> y
-      <span class="highlight">Política de Privacidad</span>.
-    </p>
-
-    <ion-button fill="clear" size="small" (click)="toggleForm()">
-      {{ isLogin ? 'No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión' }}
+    <ion-button fill="clear" size="small" (click)="goRegister()">
+      ¿No tienes cuenta? Regístrate aquí
     </ion-button>
   </div>
 </ion-content>

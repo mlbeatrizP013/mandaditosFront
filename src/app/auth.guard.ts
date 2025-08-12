@@ -1,27 +1,26 @@
+// src/app/auth.guard.ts
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
+  constructor(private auth: AuthService, private router: Router) {}
 
-  constructor(private router: Router) {}
-
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    const usuario = JSON.parse(localStorage.getItem('usuarioActivo') || 'null');
-
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return false;
+  canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
+    // 1) sin sesión => al login
+    if (!this.auth.isLoggedIn) {
+      return this.router.parseUrl('/login');
     }
 
-    const expectedRole = route.data['role'];
-    if (expectedRole && usuario.role !== expectedRole) {
-      this.router.navigate(['/login']);
-      return false;
+    // 2) con sesión pero rol incorrecto => redirige a su área
+    const requiredRole = route.data?.['role'] as 'cliente' | 'repartidor' | undefined;
+    const currentRole = this.auth.currentRole;
+
+    if (requiredRole && currentRole !== requiredRole) {
+      return this.router.parseUrl(currentRole === 'cliente' ? '/main-user' : '/repartidor');
     }
 
-    return true;
+    return true; // ok
   }
 }

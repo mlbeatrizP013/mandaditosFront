@@ -1,0 +1,89 @@
+<ion-content class="login-bg" fullscreen>
+  <div class="container">
+    <h1 class="app-title">Nombre de La App</h1>
+
+    <img src="assets/mandado.png" alt="paquete" class="logo" />
+
+    <h2 class="subtitle">Regístrate</h2>
+
+    <p class="description">Completa el formulario para crear una cuenta</p>
+
+    <form (ngSubmit)="onSubmit()">
+      <!-- Rol -->
+      <ion-item lines="none" class="custom-input">
+        <ion-select placeholder="Selecciona tu rol" [(ngModel)]="role" name="role" required>
+          <ion-select-option value="cliente">Cliente</ion-select-option>
+          <ion-select-option value="repartidor">Repartidor</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Datos comunes -->
+      <ion-item lines="none" class="custom-input">
+        <ion-input [(ngModel)]="nombre" name="nombre" type="text" placeholder="Nombre" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input [(ngModel)]="telefono" name="telefono" type="text" placeholder="Teléfono" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input [(ngModel)]="correo" name="correo" type="email" placeholder="email@dominio.com" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input [(ngModel)]="password" name="password" type="password" placeholder="Contraseña" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="custom-input">
+        <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" placeholder="Confirma tu contraseña" required></ion-input>
+      </ion-item>
+
+      <!-- Campo extra de repartidor -->
+      <ion-item *ngIf="role === 'repartidor'" lines="none" class="custom-input">
+        <ion-input [(ngModel)]="placa" name="placa" type="text" placeholder="Placa del vehículo" required></ion-input>
+      </ion-item>
+
+      <!-- Dirección (visible sólo si rol=cliente) -->
+      <ng-container *ngIf="role === 'cliente'">
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.calle" name="calle" type="text" placeholder="Calle" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.num_casa" name="num_casa" type="number" placeholder="Número" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.CP" name="CP" type="number" placeholder="Código Postal" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.colonia" name="colonia" type="text" placeholder="Colonia" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.municipio" name="municipio" type="text" placeholder="Municipio" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.estado" name="estado" type="text" placeholder="Estado" required></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.alias" name="alias" type="text" placeholder="Alias (opcional)"></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input">
+          <ion-input [(ngModel)]="dir.referencia" name="referencia" type="text" placeholder="Referencia (opcional)"></ion-input>
+        </ion-item>
+      </ng-container>
+
+      <ion-button expand="block" type="submit" class="continue-button">
+        Registrar
+      </ion-button>
+    </form>
+
+    <p class="terms-text">
+      Al hacer clic en registrar, aceptas nuestros
+      <span class="highlight">Términos de Servicio</span> y
+      <span class="highlight">Política de Privacidad</span>.
+    </p>
+
+    <ion-button fill="clear" size="small" (click)="goLogin()">
+      ¿Ya tienes cuenta? Inicia sesión
+    </ion-button>
+  </div>
+</ion-content>
