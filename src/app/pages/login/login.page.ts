@@ -23,7 +23,7 @@ export class LoginPage {
       return this.showAlert('Error', 'Completa email y contraseña');
     }
     this.auth.login(this.email, this.password).subscribe({
-      next: (res) => {
+      next: (res) => {  
         const role = res.role;
         if (role === 'cliente') {
           this.navCtrl.navigateRoot('/main-user');

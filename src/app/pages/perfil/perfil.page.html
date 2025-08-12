@@ -1,57 +1,97 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="perfil-bg" [fullscreen]="true">
-
-  <div class="container">
+  <div class="container" *ngIf="!loading; else cargando">
 
     <ion-avatar class="avatar">
       <img src="assets/usuario.png" alt="Avatar" />
     </ion-avatar>
 
-    <ion-input
-      type="text"
-      placeholder="Nombre de Usuario"
-      class="input-box"
-      fill="solid"
-    ></ion-input>
+    <!-- Email solo lectura (proviene de User) -->
+    <ion-input type="email" [value]="email || ''" class="input-box" fill="solid" label="Correo"
+      label-placement="stacked" readonly></ion-input>
 
-    <ion-input
-      type="email"
-      placeholder="Correo"
-      class="input-box"
-      fill="solid"
-    ></ion-input>
+    <!-- CLIENTE -->
+    <ng-container *ngIf="role === 'cliente' && cliente">
+      <ion-input type="text" [(ngModel)]="cliente.nombre" name="c_nombre" class="input-box" fill="solid" label="Nombre"
+        label-placement="stacked"></ion-input>
+      <ion-input type="tel" [(ngModel)]="cliente.telefono" name="c_tel" class="input-box" fill="solid" label="Teléfono"
+        label-placement="stacked"></ion-input>
 
-    <ion-input
-      type="password"
-      placeholder="Contraseña"
-      class="input-box"
-      fill="solid"
-    ></ion-input>
+      <ion-button expand="block" shape="round" class="btn-primary" (click)="guardarPerfil()">
+        Guardar perfil
+      </ion-button>
 
-    <ion-input
-      type="tel"
-      placeholder="Número telefónico"
-      class="input-box"
-      fill="solid"
-    ></ion-input>
+      <!-- Direcciones -->
+      <ion-list class="dir-list" inset>
+        <ion-list-header>Direcciones</ion-list-header>
 
-    <ion-button expand="block" shape="round" class="btn-primary">
-      Guardar
-    </ion-button>
+        <ion-item *ngFor="let d of direcciones" lines="full" color="light">
+          <ion-label class="ion-text-wrap" color="light">
+            <div class="dir-grid">
+              <ion-input [(ngModel)]="d.calle" placeholder="Calle" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.num_casa" type="number" placeholder="Num" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.CP" type="number" placeholder="CP" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.colonia" placeholder="Colonia" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.municipio" placeholder="Municipio" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.estado" placeholder="Estado" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.alias" placeholder="Alias" class="dir-input"></ion-input>
+              <ion-input [(ngModel)]="d.referencia" placeholder="Referencia" class="dir-input"></ion-input>
+            </div>
+            <ion-button slot="end" size="small" (click)="actualizarDireccion(d)">Actualizar</ion-button>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- Agregar dirección -->
+      <ion-card>
+        <ion-card-header><ion-card-title>Agregar dirección</ion-card-title></ion-card-header>
+        <ion-card-content>
+          <div class="dir-grid">
+            <ion-input [(ngModel)]="nuevaDir.calle" placeholder="Calle" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.num_casa" type="number" placeholder="Num" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.CP" type="number" placeholder="CP" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.colonia" placeholder="Colonia" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.municipio" placeholder="Municipio" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.estado" placeholder="Estado" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.alias" placeholder="Alias (opcional)" class="dir-input"></ion-input>
+            <ion-input [(ngModel)]="nuevaDir.referencia" placeholder="Referencia (opcional)"
+              class="dir-input"></ion-input>
+          </div>
+          <ion-button expand="block" (click)="agregarDireccion()">Agregar</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <!-- REPARTIDOR -->
+    <ng-container *ngIf="role === 'repartidor' && repartidor">
+      <ion-input type="text" [(ngModel)]="repartidor.nombre" name="r_nombre" class="input-box" fill="solid"
+        label="Nombre" label-placement="stacked"></ion-input>
+      <ion-input type="tel" [(ngModel)]="repartidor.telefono" name="r_tel" class="input-box" fill="solid"
+        label="Teléfono" label-placement="stacked"></ion-input>
+      <ion-input type="text" [(ngModel)]="repartidor.placa" name="r_placa" class="input-box" fill="solid" label="Placa"
+        label-placement="stacked"></ion-input>
+
+
+
+      <ion-button expand="block" shape="round" class="btn-primary" (click)="guardarPerfil()">
+        Guardar perfil
+      </ion-button>
+    </ng-container>
 
     <ion-button expand="block" shape="round" fill="outline" class="btn-secundario" (click)="cerrarSesion()">
       Cerrar sesión
     </ion-button>
-
   </div>
 
+  <ng-template #cargando>
+    <ion-spinner name="crescent" class="ion-margin"></ion-spinner>
+  </ng-template>
 </ion-content>

@@ -111,40 +111,72 @@
     </div>
   </div>
 
-  <!-- VISTA 2: Formulario para solicitar -->
-  <div *ngIf="mostrarFormulario">
-    <h2 class="form-title">Solicita un Mandado</h2>
+ <!-- ...encabezado igual... -->
 
-    <div class="image-container">
-      <img src="assets/mandado.png" alt="Paquete" />
-    </div>
+<!-- VISTA 2: Formulario para solicitar -->
 
-    <!-- Precio -->
-    <div class="slider-container">
-      <div class="labels">
-        <span>Precio</span>
-        <span>$0-100</span>
-      </div>
-      <ion-range min="0" max="100" [(ngModel)]="precio" pin="true"></ion-range>
-      <p>Ingresa un monto</p>
-    </div>
+<div *ngIf="mostrarFormulario">
+  <h2 class="form-title">Solicita un Mandado</h2>
 
-    <!-- Inputs -->
-<ion-input type="text" placeholder="Nombre del producto" fill="solid" class="custom-input"></ion-input>
-<ion-input type="text" placeholder="Descripción del producto" fill="solid" class="custom-input"></ion-input>
-<ion-input type="text" placeholder="Dirección de recolección" fill="solid" class="custom-input"></ion-input>
-<ion-input type="text" placeholder="Dirección de entrega" fill="solid" class="custom-input"></ion-input>
-
-
-    <!-- Botón enviar o regresar -->
-    <div class="btn-container">
-      <ion-button expand="block" shape="round" color="light" (click)="enviarSolicitud()">
-        Solicitar
-      </ion-button>
-      <ion-button expand="block" fill="clear" (click)="mostrarFormulario = false">
-        Cancelar
-      </ion-button>
-    </div>
+  <div class="image-container">
+    <img src="assets/mandado.png" alt="Paquete" />
   </div>
 
-</ion-content>
+  <!-- Categoría -->
+  <ion-item class="custom-input" lines="none">
+  <ion-select placeholder="Categoría" [(ngModel)]="categoriaId" name="categoria" interface="alert">
+    <ion-select-option *ngFor="let c of categorias" [value]="c.id">{{ c.nombre }}</ion-select-option>
+    <ion-select-option *ngIf="categorias.length === 0" disabled value="">
+      (sin categorías)
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+
+
+  <!-- Dirección de recolección (ID existente) -->
+  <ion-item class="custom-input" lines="none">
+    <ion-select placeholder="Lugar de recolección" [(ngModel)]="recoleccionId" name="recoleccion" interface="popover">
+      <ion-select-option *ngFor="let d of direcciones" [value]="d.id">
+        {{ d.calle }} #{{ d.num_casa }} ({{ d.colonia }})
+      </ion-select-option>
+      <ion-select-option *ngIf="direcciones.length === 0" disabled value="">
+        (agrega una dirección primero)
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Dirección de entrega -->
+  <ion-item class="custom-input" lines="none">
+    <ion-select placeholder="Lugar de entrega" [(ngModel)]="entregaId" name="entrega" interface="popover">
+      <ion-select-option *ngFor="let d of direcciones" [value]="d.id">
+        {{ d.calle }} #{{ d.num_casa }} ({{ d.colonia }})
+      </ion-select-option>
+      <ion-select-option *ngIf="direcciones.length === 0" disabled value="">
+        (agrega una dirección primero)
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Precio -->
+  <div class="slider-container">
+    <div class="labels">
+      <span>Precio</span>
+      <span>$0-100</span>
+    </div>
+    <ion-range min="0" max="100" [(ngModel)]="precio" pin="true"></ion-range>
+  </div>
+
+  <!-- Notas -->
+  <ion-input type="text" placeholder="Notas (opcional)" fill="solid" class="custom-input" [(ngModel)]="notas"></ion-input>
+
+  <div class="btn-container">
+    <ion-button expand="block" shape="round" color="light" (click)="enviarSolicitud()">
+      Solicitar
+    </ion-button>
+    <ion-button expand="block" fill="clear" (click)="mostrarFormulario = false">
+      Cancelar
+    </ion-button>
+  </div>
+</div>
+
+

@@ -117,4 +117,39 @@ export class AuthService {
       switchMap(loginRes => this.crearDireccion(dir, loginRes.perfil.id))
     );
   }
+
+// ===== PERFIL: CLIENTE =====
+getClienteById(id: number) {
+  return this.http.get<any>(`${this.base}/clientes/${id}`, { headers: this.authHeaders });
+}
+updateCliente(id: number, data: Partial<{ nombre: string; telefono: string; active: boolean }>) {
+  return this.http.patch<any>(`${this.base}/clientes/${id}`, data, { headers: this.authHeaders });
+}
+
+// ===== PERFIL: REPARTIDOR =====
+getRepartidorById(id: number) {
+  return this.http.get<any>(`${this.base}/repartidor/${id}`, { headers: this.authHeaders });
+}
+updateRepartidor(
+  id: number,
+  data: Partial<{ nombre: string; telefono: string; placa: string; activo: boolean }>
+) {
+  return this.http.patch<any>(`${this.base}/repartidor/${id}`, data, { headers: this.authHeaders });
+}
+
+// ===== DIRECCIONES (Cliente) =====
+getDireccionesByCliente(clienteId: number) {
+  return this.http.get<any[]>(`${this.base}/direccion/cliente/${clienteId}`, { headers: this.authHeaders });
+}
+createDireccion(clienteId: number, dir: {
+  calle: string; num_casa: number; CP: number; colonia: string; municipio: string; estado: string; alias?: string; referencia?: string;
+}) {
+  return this.http.post(`${this.base}/direccion`, { ...dir, clienteId }, { headers: this.authHeaders });
+}
+updateDireccion(id: number, data: Partial<{
+  calle: string; num_casa: number; CP: number; colonia: string; municipio: string; estado: string; alias?: string; referencia?: string;
+}>) {
+  return this.http.patch(`${this.base}/direccion/${id}`, data, { headers: this.authHeaders });
+}
+
 }

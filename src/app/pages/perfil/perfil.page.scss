@@ -20,33 +20,92 @@
     margin-bottom: 1.5rem;
   }
 
-  .input-box {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 1rem;
-    --border-radius: 12px;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    --background: white;
+   .input-box[readonly],
+  ion-input.input-box[readonly] {
+    opacity: 0.85;
+    pointer-events: none;
   }
 
-  .btn-primary {
+  /* Lista de direcciones */
+  .dir-list {
     width: 100%;
-    max-width: 250px;
+    max-width: 720px;
     margin-top: 1rem;
-    font-weight: bold;
-    --background: #ffffff;
-    color: black;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    background: transparent;
+
+    ion-item {
+      --background: #fff;
+      --border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    ion-list-header {
+      font-weight: 700;
+      color: #222;
+    }
   }
 
-  .btn-secundario {
+  /* Grid responsive para inputs de dirección */
+  .dir-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .dir-input {
+    --background: #ffffff;
+    --border-radius: 10px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+  }
+
+  /* Tarjeta para “Agregar dirección” */
+  ion-card {
     width: 100%;
-    max-width: 250px;
-    margin-top: 0.8rem;
-    font-weight: bold;
-    background: white;
-    color: black;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    max-width: 720px;
+    margin-top: 16px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+
+    ion-card-content {
+      padding-top: 12px;
+    }
+  }
+
+  /* Botón “Actualizar” en cada dirección */
+  ion-item ion-button {
+    --border-radius: 10px;
+    font-weight: 600;
+  }
+
+  /* Centrar spinner de carga */
+  ion-spinner {
+    display: block;
+    margin: 40px auto 0;
+  }
+
+  /* Avatar con sombra suave */
+  .avatar {
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    border: 3px solid rgba(255,255,255,0.6);
+  }
+
+  /* Toggle alineado bonito dentro de item */
+  ion-item.input-box ion-toggle {
+    margin-left: auto;
+  }
+
+  /* Breakpoints para grid de dirección */
+  @media (min-width: 480px) {
+    .dir-grid {
+      grid-template-columns: repeat(3, minmax(140px, 1fr));
+    }
+  }
+  @media (min-width: 768px) {
+    .dir-grid {
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+    }
   }
 }

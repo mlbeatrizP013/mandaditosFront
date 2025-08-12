@@ -34,47 +34,63 @@
     </ion-avatar>
 
     <!-- Mandado Actual -->
+    <!-- Mandado Actual -->
     <h2 class="titulo">Mandado Actual</h2>
+
     <ion-card class="pedido-card">
-      <ion-item lines="none">
+      <ion-item lines="none" *ngIf="pedidoActual; else sinActual">
         <ion-icon name="navigate-outline" slot="start"></ion-icon>
         <ion-label>
-          <h3>Estado del pedido</h3>
-          <p>Descripción del objeto</p>
-          <p>Hora</p>
+          <h3>{{ pedidoActual?.categoria?.nombre || 'Pedido' }}</h3>
+          <p>De: {{ pedidoActual?.lugar_recoleccion?.colonia }} → A: {{ pedidoActual?.lugar_entrega?.colonia }}</p>
+          <p>Estatus: {{ estatusActual(pedidoActual) }}</p>
+          <p>Precio: ${{ pedidoActual?.precio }}</p>
         </ion-label>
-        <ion-button fill="clear" color="dark" size="small">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
+
+        <!-- Acciones según estatus -->
+        <ng-container [ngSwitch]="estatusActual(pedidoActual)">
+          <ion-button *ngSwitchCase="'Aceptado'" fill="solid" color="primary" size="small" (click)="iniciarCamino()">
+            Iniciar (En camino)
+          </ion-button>
+          <ion-button *ngSwitchCase="'En camino'" fill="solid" color="success" size="small" (click)="marcarEntregado()">
+            Marcar entregado
+          </ion-button>
+          <ion-button *ngSwitchDefault fill="clear" color="medium" size="small" disabled>
+            Sin acciones
+          </ion-button>
+        </ng-container>
       </ion-item>
+
+      <ng-template #sinActual>
+        <ion-item lines="none">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>No tienes mandados en curso</h3>
+            <p>Acepta uno de los disponibles para comenzar</p>
+          </ion-label>
+        </ion-item>
+      </ng-template>
     </ion-card>
 
+
     <!-- Buscador -->
-    <ion-searchbar
-      [(ngModel)]="filtro"
-      placeholder="Buscar pedidos"
-      class="custom-search"
-    ></ion-searchbar>
+    <ion-searchbar [(ngModel)]="filtro" placeholder="Buscar pedidos" class="custom-search"></ion-searchbar>
 
     <!-- Mandados disponibles -->
     <h2 class="titulo">Mandados disponibles</h2>
-    <ion-card
-      class="pedido-card"
-      *ngFor="let pedido of pedidosFiltrados()"
-      (click)="mostrarAlerta(pedido)"
-    >
+    <ion-card class="pedido-card" *ngFor="let pedido of pedidosFiltrados()" (click)="mostrarAlerta(pedido)">
       <ion-item lines="none">
         <ion-icon name="navigate-outline" slot="start"></ion-icon>
         <ion-label>
-          <h3>{{ pedido.estado }}</h3>
-          <p>{{ pedido.descripcion }}</p>
-          <p>{{ pedido.hora }}</p>
-          <p>Precio: {{ pedido.precio }}</p>
+          <h3>{{ pedido?.categoria?.nombre || 'Pedido' }}</h3>
+          <p>De: {{ pedido?.lugar_recoleccion?.colonia }} → A: {{ pedido?.lugar_entrega?.colonia }}</p>
+          <p>Precio: ${{ pedido?.precio }}</p>
         </ion-label>
         <ion-button fill="clear" color="dark" size="small">
           <ion-icon name="close-outline"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-card>
+
   </div>
 </ion-content>
