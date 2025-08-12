@@ -1,91 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone:false
+  standalone: false,
 })
 export class LoginPage {
-  isLogin = true;
-
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  selectedRole: string = '';
+  // Solo login
+  email = '';
+  password = '';
 
   constructor(
     private navCtrl: NavController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private auth: AuthService
   ) {}
 
-  toggleForm() {
-    this.isLogin = !this.isLogin;
-    this.clearForm();
+  // Ir a la pantalla de registro
+  goToRegistro() {
+    this.navCtrl.navigateForward('/registro');
   }
 
-  clearForm() {
-    this.email = '';
-    this.password = '';
-    this.confirmPassword = '';
-    this.selectedRole = '';
-  }
-
+  // Inicia sesión contra NestJS
   async login() {
-  const storedUsers = JSON.parse(localStorage.getItem('usuarios') || '[]');
-  const user = storedUsers.find((u: any) => u.email === this.email && u.password === this.password);
-
-  if (user) {
-    localStorage.setItem('usuarioActivo', JSON.stringify(user));
-
-    await this.showAlert('¡Bienvenido!', `Hola ${user.email}`);
-
-    // Redirigir según rol
-    if (user.role === 'cliente') {
-      this.navCtrl.navigateRoot('/main-user');
-    } else if (user.role === 'repartidor') {
-      this.navCtrl.navigateRoot('/repartidor');
-    }
-  } else {
-    await this.showAlert('Error', 'Correo o contraseña incorrectos');
-  }
-}
-
-
-  async register() {
-    if (this.password !== this.confirmPassword) {
-      await this.showAlert('Error', 'Las contraseñas no coinciden');
-      return;
+    if (!this.email || !this.password) {
+      return this.showAlert('Faltan datos', 'Ingresa correo y contraseña.');
     }
 
-    if (!this.selectedRole) {
-      await this.showAlert('Error', 'Debes seleccionar un rol');
-      return;
+    try {
+      await firstValueFrom(this.auth.login(this.email, this.password));
+
+      const role = this.auth.role;
+      if (role === 'cliente') {
+        this.navCtrl.navigateRoot('/main-user');
+      } else if (role === 'repartidor') {
+        this.navCtrl.navigateRoot('/repartidor');
+      } else {
+        // Rol desconocido: regresa al login
+        this.navCtrl.navigateRoot('/login');
+      }
+    } catch (e: any) {
+      // Mensaje del backend o genérico
+      await this.showAlert(
+        'Error',
+        e?.error?.message || 'Correo o contraseña incorrectos'
+      );
     }
-
-    let storedUsers = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-    const emailExists = storedUsers.some((u: any) => u.email === this.email);
-    if (emailExists) {
-      await this.showAlert('Error', 'Ya existe una cuenta con este correo');
-      return;
-    }
-
-    const newUser = {
-      email: this.email,
-      password: this.password,
-      role: this.selectedRole // 👈 se guarda el rol
-    };
-
-    storedUsers.push(newUser);
-    localStorage.setItem('usuarios', JSON.stringify(storedUsers));
-
-    await this.showAlert('Registro exitoso', 'Ya puedes iniciar sesión');
-    this.toggleForm();
   }
 
-  async showAlert(header: string, message: string) {
+  // Alerta reutilizable
+  private async showAlert(header: string, message: string) {
     const alert = await this.alertCtrl.create({
       header,
       message,

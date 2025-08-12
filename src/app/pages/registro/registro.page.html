@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear cuenta</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-segment [(ngModel)]="role" value="cliente">
+    <ion-segment-button value="cliente">Cliente</ion-segment-button>
+    <ion-segment-button value="repartidor">Repartidor</ion-segment-button>
+  </ion-segment>
+
+  <!-- ===== Registro Cliente ===== -->
+  <form *ngIf="role==='cliente'" (ngSubmit)="registerCliente()">
+    <ion-list lines="none">
+      <ion-item><ion-input [(ngModel)]="cliente.nombre" name="c_nombre" placeholder="Nombre completo" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.telefono" name="c_tel" placeholder="Teléfono" type="tel" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.correo" name="c_mail" placeholder="Correo" type="email" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.password" name="c_pass" placeholder="Contraseña" type="password" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.confirm" name="c_confirm" placeholder="Confirmar contraseña" type="password" required></ion-input></ion-item>
+
+      <ion-item-divider>Dirección</ion-item-divider>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.calle" name="d_calle" placeholder="Calle" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.num_casa" name="d_num" placeholder="Número" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.CP" name="d_cp" placeholder="Código Postal" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.colonia" name="d_colonia" placeholder="Colonia" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.municipio" name="d_mpio" placeholder="Municipio" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.estado" name="d_estado" placeholder="Estado" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="cliente.direccion.alias" name="d_alias" placeholder="Alias (opcional)"></ion-input></ion-item>
+      <ion-item><ion-textarea [(ngModel)]="cliente.direccion.referencia" name="d_ref" placeholder="Referencias (opcional)"></ion-textarea></ion-item>
+    </ion-list>
+
+    <ion-button expand="block" type="submit">Crear cuenta de Cliente</ion-button>
+  </form>
+
+  <!-- ===== Registro Repartidor ===== -->
+  <form *ngIf="role==='repartidor'" (ngSubmit)="registerRepartidor()">
+    <ion-list lines="none">
+      <ion-item><ion-input [(ngModel)]="repartidor.nombre" name="r_nombre" placeholder="Nombre completo" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="repartidor.telefono" name="r_tel" placeholder="Teléfono" type="tel" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="repartidor.correo" name="r_mail" placeholder="Correo" type="email" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="repartidor.placa" name="r_placa" placeholder="Placa del vehículo" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="repartidor.password" name="r_pass" placeholder="Contraseña" type="password" required></ion-input></ion-item>
+      <ion-item><ion-input [(ngModel)]="repartidor.confirm" name="r_confirm" placeholder="Confirmar contraseña" type="password" required></ion-input></ion-item>
+    </ion-list>
+
+    <ion-button expand="block" type="submit">Crear cuenta de Repartidor</ion-button>
+  </form>
+
+  <div class="tips ion-text-center ion-margin-top">
+    Al registrarte aceptas nuestros <b>Términos</b> y <b>Privacidad</b>.
+  </div>
+</ion-content>
